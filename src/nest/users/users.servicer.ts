@@ -9,6 +9,16 @@ export class UsersService {
   //eslint-disable-next-line
   constructor(private prisma: PrismaService) { }
 
+  async findAll() {
+    return this.prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
+  }
+
   async create(data: RegisterDto) {
     const userExists = await this.prisma.user.findUnique({
       where: { email: data.email },
