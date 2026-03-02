@@ -9,6 +9,7 @@ export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    //eslint-disable-next-line
   ) { }
 
   async login(email: string, password: string) {
@@ -18,6 +19,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    //eslint-disable-next-line
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {

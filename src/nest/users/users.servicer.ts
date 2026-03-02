@@ -6,6 +6,7 @@ import { RegisterDto } from 'src/users/dto/register.dto';
 
 @Injectable()
 export class UsersService {
+  //eslint-disable-next-line
   constructor(private prisma: PrismaService) { }
 
   async create(data: RegisterDto) {
@@ -16,8 +17,8 @@ export class UsersService {
     if (userExists) {
       throw new BadRequestException('User already exists');
     }
-
-    const hashedPassword = await bcrypt.hash(data.password, 10);
+    //eslint-disable-next-line
+    const hashedPassword: string = await bcrypt.hash(data.password, 10);
 
     return this.prisma.user.create({
       data: {

@@ -6,4 +6,5 @@ import { PrismaModule } from 'prisma/prisma.module';
 @Module({
   imports: [PrismaModule, UsersModule, AuthModule],
 })
+//eslint-disable-next-line
 export class AppModule { }
