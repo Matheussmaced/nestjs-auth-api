@@ -8,6 +8,11 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
+  app.enableCors({
+    origin: 'http://localhost:8080',
+    credentials: true,
+  });
+
   const config = new DocumentBuilder()
     .setTitle('Nest API')
     .setDescription('API com Auth, Prisma e Swagger')
