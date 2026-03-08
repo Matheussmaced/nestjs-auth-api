@@ -7,7 +7,6 @@ export class ClientsService {
   constructor(private prisma: PrismaService) { }
 
   async create(userId: string, data: CreateClientDto) {
-    //eslint-disable-next-line
     return await this.prisma.client.create({
       data: {
         ...data,
@@ -17,8 +16,7 @@ export class ClientsService {
   }
 
   async findAll(userId: string) {
-    //eslint-disable-next-line
-    return await this.prisma.client.findMany({
+    return this.prisma.client.findMany({
       where: { userId },
     });
   }
