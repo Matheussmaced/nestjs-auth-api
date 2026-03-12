@@ -13,7 +13,9 @@ import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('clients/:clientId/products')
 export class ProductsController {
   //eslint-disable-next-line
@@ -32,12 +34,10 @@ export class ProductsController {
   }
   @Patch(':id')
   update(@Param('id') id: string, @Body() data: UpdateProductDto) {
-    //eslint-disable-next-line
     return this.productsService.update(id, data);
   }
   @Delete(':id')
   remove(@Param('id') id: string) {
-    //eslint-disable-next-line
     return this.productsService.remove(id);
   }
 }

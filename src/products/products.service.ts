@@ -9,7 +9,6 @@ export class ProductsService {
   constructor(private prisma: PrismaService) { }
 
   async create(clientId: string, data: CreateProductDto) {
-    //eslint-disable-next-line
     return await this.prisma.product.create({
       data: {
         ...data,
@@ -19,23 +18,61 @@ export class ProductsService {
   }
 
   async findAll(clientId: string) {
-    //eslint-disable-next-line
     return await this.prisma.product.findMany({
       where: {
         clientId,
       },
     });
   }
-  update(id: string, data: UpdateProductDto) {
-    //eslint-disable-next-line
-    return this.prisma.product.update({
+  c;
+  async update(id: string, data: UpdateProductDto) {
+    const product = await this.prisma.product.findUnique({
+      where: { id },
+    });
+
+    // valida se existe
+    if (!product) {
+      throw new Error('Produto não encontrado');
+    }
+
+    const updatedProduct = await this.prisma.product.update({
       where: { id },
       data,
     });
+
+    if (!product.completed && data.completed === true) {
+      const client = await this.prisma.client.findUnique({
+        where: { id: product.clientId },
+      });
+
+      const finance = await this.prisma.finance.findFirst({
+        where: { userId: client?.userId },
+      });
+
+      if (finance) {
+        await this.prisma.transaction.create({
+          data: {
+            amount: product.price,
+            type: 'INCOME',
+            description: `Pagamento do produto ${product.name}`,
+            financeId: finance.id,
+          },
+        });
+
+        await this.prisma.finance.update({
+          where: { id: finance.id },
+          data: {
+            totalBalance: { increment: product.price },
+            monthlyBalance: { increment: product.price },
+          },
+        });
+      }
+    }
+
+    return updatedProduct;
   }
 
   remove(id: string) {
-    //eslint-disable-next-line
     return this.prisma.product.delete({
       where: { id },
     });

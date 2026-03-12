@@ -17,6 +17,7 @@ async function bootstrap() {
     .setTitle('Nest API')
     .setDescription('API com Auth, Prisma e Swagger')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

@@ -14,7 +14,8 @@ model User {
   password  String
   createdAt DateTime @default(now())
 
-  clients client[]
+  clients  client[]
+  finances Finance[]
 }
 
 model client {
@@ -31,13 +32,44 @@ model client {
 }
 
 model Product {
-  id     String  @id @default(uuid())
-  name   String
-  price  Float
-  active Boolean @default(true)
+  id        String  @id @default(uuid())
+  name      String
+  price     Float
+  active    Boolean @default(true)
+  completed Boolean @default(false)
 
   clientId String
   client   client @relation(fields: [clientId], references: [id])
 
   createdAt DateTime @default(now())
+}
+
+model Finance {
+  id             String @id @default(uuid())
+  totalBalance   Float  @default(0)
+  monthlyBalance Float  @default(0)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  transactions Transaction[]
+
+  createdAt DateTime @default(now())
+}
+
+model Transaction {
+  id          String          @id @default(uuid())
+  amount      Float
+  type        TransactionType
+  description String?
+
+  financeId String
+  finance   Finance @relation(fields: [financeId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
 }
