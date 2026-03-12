@@ -1,14 +1,15 @@
-# nestjs-auth-api
+# 🚀 nestjs-auth-api
 
 API de gerenciamento construída com **NestJS**, **Prisma**, **PostgreSQL**, **Swagger** e **Docker**.
 
 O projeto evoluiu de uma simples API de autenticação para um **mini sistema de gestão**, permitindo controlar:
 
-* Usuários
-* Clientes
-* Produtos
-* Financeiro
-* Transações
+- Usuários
+- Clientes
+- Produtos
+- Financeiro
+- Transações
+- Dashboard financeiro
 
 A API utiliza **JWT para autenticação**, **DTOs para validação**, **Swagger para documentação**, e **Prisma ORM para persistência de dados**.
 
@@ -20,13 +21,19 @@ A API utiliza **JWT para autenticação**, **DTOs para validação**, **Swagger 
 
 Sistema completo de autenticação baseado em **JWT**.
 
-Endpoints disponíveis:
+### Endpoints
 
-* Registro de usuário
-  `POST /auth/register`
+Registro de usuário
 
-* Login
-  `POST /auth/login`
+```http
+POST /auth/register
+```
+
+Login
+
+```http
+POST /auth/login
+```
 
 Após o login, o usuário recebe um **JWT Token** que deve ser enviado no header:
 
@@ -40,22 +47,31 @@ Authorization: Bearer TOKEN
 
 Gerenciamento de usuários do sistema.
 
-Endpoints:
+### Endpoints
 
-* Listar usuários
-  `GET /users`
+Listar usuários
 
-* Atualizar usuário
-  `PATCH /users/:id`
+```http
+GET /users
+```
 
-* Remover usuário
-  `DELETE /users/:id`
+Atualizar usuário
 
-Funcionalidades:
+```http
+PATCH /users/:id
+```
 
-* Validação com DTO
-* Prevenção de emails duplicados
-* Senhas armazenadas com **bcrypt**
+Remover usuário
+
+```http
+DELETE /users/:id
+```
+
+### Funcionalidades
+
+- Validação com DTO
+- Prevenção de emails duplicados
+- Senhas armazenadas com **bcrypt**
 
 ---
 
@@ -63,41 +79,41 @@ Funcionalidades:
 
 Usuários podem gerenciar múltiplos clientes.
 
-Relação:
+### Relação
 
 ```
 User 1:N Clients
 ```
 
-Endpoints:
+### Endpoints
 
 Criar cliente
 
-```
+```http
 POST /clients
 ```
 
 Listar clientes
 
-```
+```http
 GET /clients
 ```
 
 Buscar cliente por id
 
-```
+```http
 GET /clients/:id
 ```
 
 Atualizar cliente
 
-```
+```http
 PATCH /clients/:id
 ```
 
 Excluir cliente
 
-```
+```http
 DELETE /clients/:id
 ```
 
@@ -107,35 +123,35 @@ DELETE /clients/:id
 
 Cada cliente pode possuir múltiplos produtos ou serviços.
 
-Relação:
+### Relação
 
 ```
 Client 1:N Products
 ```
 
-Endpoints:
+### Endpoints
 
 Criar produto para cliente
 
-```
+```http
 POST /clients/:clientId/products
 ```
 
 Listar produtos do cliente
 
-```
+```http
 GET /clients/:clientId/products
 ```
 
 Atualizar produto
 
-```
+```http
 PATCH /products/:id
 ```
 
 Excluir produto
 
-```
+```http
 DELETE /products/:id
 ```
 
@@ -151,13 +167,13 @@ completed: boolean
 
 Quando um produto é marcado como **concluído**, o sistema automaticamente:
 
-1️⃣ Cria uma **transação financeira**
-2️⃣ Atualiza o **saldo total da empresa**
+1️⃣ Cria uma **transação financeira**  
+2️⃣ Atualiza o **saldo total da empresa**  
 3️⃣ Atualiza o **saldo mensal**
 
-Exemplo:
+### Exemplo
 
-```
+```http
 PATCH /products/:id
 ```
 
@@ -185,25 +201,27 @@ Isso gera automaticamente:
 
 Cada usuário possui um controle financeiro próprio.
 
-Campos principais:
+### Campos principais
 
 ```
 Finance
+- id
 - totalBalance
 - monthlyBalance
+- userId
 ```
 
-Endpoints:
+### Endpoints
 
 Criar financeiro
 
-```
+```http
 POST /finance
 ```
 
 Consultar financeiro
 
-```
+```http
 GET /finance
 ```
 
@@ -213,20 +231,20 @@ GET /finance
 
 O sistema permite registrar transações financeiras manualmente.
 
-Tipos:
+### Tipos
 
 ```
 INCOME  -> Entrada de dinheiro
 EXPENSE -> Saída de dinheiro
 ```
 
-Criar transação:
+### Criar transação
 
-```
+```http
 POST /finance/transactions
 ```
 
-Exemplo:
+### Exemplo
 
 ```json
 {
@@ -238,25 +256,65 @@ Exemplo:
 
 O sistema automaticamente:
 
-* Atualiza o saldo total
-* Atualiza o saldo mensal
+- Atualiza o saldo total
+- Atualiza o saldo mensal
 
 ---
 
-# 🔹 Tecnologias
+# 📊 Dashboard Financeiro
 
-* **NestJS** — Framework Node.js escalável
-* **Prisma ORM** — ORM moderno para banco de dados
-* **PostgreSQL** — Banco relacional
-* **JWT** — Autenticação baseada em token
-* **class-validator** — Validação de dados
-* **bcrypt** — Hash de senha
-* **Swagger** — Documentação automática da API
-* **Docker** — Containerização
+A API possui um endpoint de **dashboard financeiro**, que retorna métricas calculadas a partir das transações registradas.
+
+Esse endpoint permite construir **gráficos e painéis administrativos** no frontend.
+
+### Endpoint
+
+```http
+GET /finance/dashboard
+```
+
+### Exemplo de resposta
+
+```json
+{
+  "totalBalance": 10000,
+  "monthlyRevenue": 3000,
+  "monthlyExpenses": 800,
+  "profit": 2200
+}
+```
+
+### Campos retornados
+
+```
+totalBalance     -> saldo total da empresa
+monthlyRevenue   -> soma das transações do tipo INCOME
+monthlyExpenses  -> soma das transações do tipo EXPENSE
+profit           -> lucro (revenue - expenses)
+```
+
+Esse endpoint pode ser utilizado para criar:
+
+- dashboards administrativos
+- gráficos de faturamento
+- relatórios financeiros
 
 ---
 
-# 🔹 Estrutura da Aplicação
+# 🛠 Tecnologias
+
+- **NestJS** — Framework Node.js escalável
+- **Prisma ORM** — ORM moderno para banco de dados
+- **PostgreSQL** — Banco relacional
+- **JWT** — Autenticação baseada em token
+- **class-validator** — Validação de dados
+- **bcrypt** — Hash de senha
+- **Swagger** — Documentação automática da API
+- **Docker** — Containerização
+
+---
+
+# 📁 Estrutura da Aplicação
 
 ```
 src
@@ -280,7 +338,7 @@ dto
 
 ---
 
-# 🔹 Banco de Dados
+# 🗄 Banco de Dados
 
 ## User
 
@@ -292,8 +350,6 @@ User
 - password
 - createdAt
 ```
-
----
 
 ## Client
 
@@ -308,8 +364,6 @@ Client
 - createdAt
 ```
 
----
-
 ## Product
 
 ```
@@ -323,8 +377,6 @@ Product
 - createdAt
 ```
 
----
-
 ## Finance
 
 ```
@@ -334,8 +386,6 @@ Finance
 - monthlyBalance
 - userId
 ```
-
----
 
 ## Transaction
 
@@ -351,27 +401,21 @@ Transaction
 
 ---
 
-# 🔹 Fluxo para Testar a API
-
-Para testar completamente o sistema, siga este fluxo:
+# 🔄 Fluxo para Testar a API
 
 ### 1️⃣ Registrar usuário
 
-```
+```http
 POST /auth/register
 ```
 
----
-
 ### 2️⃣ Fazer login
 
-```
+```http
 POST /auth/login
 ```
 
 Copiar o **JWT Token** retornado.
-
----
 
 ### 3️⃣ Autorizar no Swagger
 
@@ -381,35 +425,27 @@ Clique em **Authorize** e adicione:
 Bearer TOKEN
 ```
 
----
-
 ### 4️⃣ Criar financeiro
 
-```
+```http
 POST /finance
 ```
 
----
-
 ### 5️⃣ Criar cliente
 
-```
+```http
 POST /clients
 ```
 
----
-
 ### 6️⃣ Criar produto
 
-```
+```http
 POST /clients/:clientId/products
 ```
 
----
-
 ### 7️⃣ Concluir produto
 
-```
+```http
 PATCH /products/:id
 ```
 
@@ -421,19 +457,21 @@ Body:
 }
 ```
 
----
-
 ### 8️⃣ Verificar financeiro
 
-```
+```http
 GET /finance
 ```
 
-O saldo deve ser atualizado automaticamente.
+### 9️⃣ Ver dashboard financeiro
+
+```http
+GET /finance/dashboard
+```
 
 ---
 
-# 🔹 Documentação da API
+# 📚 Documentação da API
 
 Swagger disponível em:
 
@@ -443,21 +481,21 @@ http://localhost:3000/docs
 
 ---
 
-# 🔹 Executando o Projeto
+# ▶️ Executando o Projeto
 
 ## Pré-requisitos
 
-* Docker
-* Docker Compose
-* Node.js (opcional)
+- Docker
+- Docker Compose
+- Node.js (opcional)
 
 ---
 
-# 🔹 Rodando com Docker
+# 🐳 Rodando com Docker
 
-Clone o projeto:
+Clone o projeto
 
-```
+```bash
 git clone <url-do-repositorio>
 cd nestjs-auth-api
 ```
@@ -469,29 +507,29 @@ DATABASE_URL="postgresql://usuario:senha@db:5432/nestjs_auth_api"
 JWT_SECRET="supersecret"
 ```
 
-Suba os containers:
+Suba os containers
 
-```
+```bash
 docker-compose up -d --build
 ```
 
-Execute migrations:
+Execute migrations
 
-```
+```bash
 docker exec -it nestjs-auth-api_app_1 npx prisma migrate deploy
 ```
 
 ---
 
-# 🔹 Acessos
+# 🌐 Acessos
 
-API:
+API
 
 ```
 http://localhost:3000
 ```
 
-Swagger:
+Swagger
 
 ```
 http://localhost:3000/docs
@@ -499,45 +537,44 @@ http://localhost:3000/docs
 
 ---
 
-# 🔹 Rodando sem Docker
+# ▶️ Rodando sem Docker
 
-Instale dependências:
+Instale dependências
 
-```
+```bash
 npm install
 ```
 
-Execute migrations:
+Execute migrations
 
-```
+```bash
 npx prisma migrate deploy
 ```
 
-Inicie a aplicação:
+Inicie a aplicação
 
-```
+```bash
 npm run start:dev
 ```
 
 ---
 
-# 🔹 Roadmap
+# 🗺 Roadmap
 
 Próximas melhorias planejadas:
 
-* Paginação de clientes e produtos
-* Filtros por nome/email
-* Soft delete
-* Dashboard financeiro
-* Gráficos de faturamento
-* Upload de imagens para produtos
-* Testes automatizados com Jest
-* Rate limit para autenticação
-* Logs estruturados
-* Estrutura baseada em **DDD**
+- Paginação de clientes e produtos
+- Filtros por nome/email
+- Soft delete
+- Dashboard financeiro com gráficos
+- Upload de imagens para produtos
+- Testes automatizados com Jest
+- Rate limit para autenticação
+- Logs estruturados
+- Estrutura baseada em **DDD**
 
 ---
 
-# 🔹 Licença
+# 📄 Licença
 
 MIT

@@ -61,4 +61,45 @@ export class FinanceService {
 
     return transaction;
   }
+
+  async getDashboard(userId: string) {
+    const finance = await this.prisma.finance.findFirst({
+      where: { userId },
+    });
+
+    if (!finance) {
+      return {
+        totalBalance: 0,
+        monthlyRevenue: 0,
+        monthlyExpenses: 0,
+        profit: 0,
+      };
+    }
+
+    const revenue = await this.prisma.transaction.aggregate({
+      _sum: { amount: true },
+      where: {
+        financeId: finance.id,
+        type: 'INCOME',
+      },
+    });
+
+    const expenses = await this.prisma.transaction.aggregate({
+      _sum: { amount: true },
+      where: {
+        financeId: finance.id,
+        type: 'EXPENSE',
+      },
+    });
+
+    const monthlyRevenue = revenue._sum.amount ?? 0;
+    const monthlyExpenses = expenses._sum.amount ?? 0;
+
+    return {
+      totalBalance: finance.totalBalance,
+      monthlyRevenue,
+      monthlyExpenses,
+      profit: monthlyRevenue - monthlyExpenses,
+    };
+  }
 }

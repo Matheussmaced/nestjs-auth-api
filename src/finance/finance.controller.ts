@@ -43,4 +43,10 @@ export class FinanceController {
   ) {
     return this.financeService.createTransaction(financeId, data);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('dashboard')
+  getDashboard(@Request() req) {
+    return this.financeService.getDashboard(req.user.userId);
+  }
 }
