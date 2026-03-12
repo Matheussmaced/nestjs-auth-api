@@ -18,4 +18,4 @@ import { AuthController } from './auth.controller';
   controllers: [AuthController],
 })
 //eslint-disable-next-line
-export class AuthModule { }
+export class AuthModule {}

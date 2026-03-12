@@ -10,7 +10,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     //eslint-disable-next-line
-  ) { }
+  ) {}
 
   async login(email: string, password: string) {
     const user = await this.usersService.findByEmail(email);

@@ -14,7 +14,7 @@ import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 @Controller('users')
 export class UsersController {
   //eslint-disable-next-line
-  constructor(private usersService: UsersService) { }
+  constructor(private usersService: UsersService) {}
 
   @Get('/all')
   findAll() {

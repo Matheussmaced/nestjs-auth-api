@@ -6,7 +6,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 @Injectable()
 export class ProductsService {
   //eslint-disable-next-line
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(clientId: string, data: CreateProductDto) {
     return await this.prisma.product.create({

@@ -19,7 +19,7 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @Controller('clients/:clientId/products')
 export class ProductsController {
   //eslint-disable-next-line
-  constructor(private readonly productsService: ProductsService) { }
+  constructor(private readonly productsService: ProductsService) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()

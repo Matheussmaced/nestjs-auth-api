@@ -12,7 +12,7 @@ import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 @Injectable()
 export class UsersService {
   //eslint-disable-next-line
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async findAll() {
     return this.prisma.user.findMany({

@@ -14,11 +14,11 @@ model User {
   password  String
   createdAt DateTime @default(now())
 
-  clients  client[]
+  clients  Client[]
   finances Finance[]
 }
 
-model client {
+model Client {
   id     String  @id @default(uuid())
   name   String
   email  String  @unique
@@ -39,7 +39,7 @@ model Product {
   completed Boolean @default(false)
 
   clientId String
-  client   client @relation(fields: [clientId], references: [id])
+  client   Client @relation(fields: [clientId], references: [id])
 
   createdAt DateTime @default(now())
 }

@@ -7,7 +7,14 @@ import { ProductsModule } from './products/products.module';
 import { FinanceModule } from './finance/finance.module';
 
 @Module({
-  imports: [PrismaModule, UsersModule, AuthModule, ClientsModule, ProductsModule, FinanceModule],
+  imports: [
+    PrismaModule,
+    UsersModule,
+    AuthModule,
+    ClientsModule,
+    ProductsModule,
+    FinanceModule,
+  ],
 })
 //eslint-disable-next-line
-export class AppModule { }
+export class AppModule {}

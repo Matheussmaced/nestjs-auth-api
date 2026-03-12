@@ -5,7 +5,7 @@ import { LoginDto } from 'src/users/dto/login.dto';
 @Controller('auth')
 export class AuthController {
   //eslint-disable-next-line
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @Post('login')
   login(@Body() dto: LoginDto) {
