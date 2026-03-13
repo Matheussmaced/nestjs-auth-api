@@ -27,7 +27,7 @@ export class ClientsController {
     private findClients: FindClientsUseCase,
     private updateClient: UpdateClientUseCase,
     private deleteClient: DeleteClientUseCase,
-  ) { }
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
