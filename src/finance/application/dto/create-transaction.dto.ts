@@ -1,6 +1,11 @@
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
+export enum TransactionType {
+  INCOME = 'INCOME',
+  EXPENSE = 'EXPENSE',
+}
+
 export class CreateTransactionDto {
   @ApiProperty({
     example: 2000,
@@ -11,15 +16,13 @@ export class CreateTransactionDto {
 
   @ApiProperty({
     example: 'INCOME',
-    description: 'Tipo da transação (entrada ou saída)',
-    enum: ['INCOME', 'EXPENSE'],
+    enum: TransactionType,
   })
-  @IsEnum(['INCOME', 'EXPENSE'])
-  type: 'INCOME' | 'EXPENSE';
+  @IsEnum(TransactionType)
+  type: TransactionType;
 
   @ApiPropertyOptional({
     example: 'Pagamento do produto Website institucional',
-    description: 'Descrição da transação',
   })
   @IsOptional()
   @IsString()

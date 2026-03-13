@@ -8,7 +8,7 @@ export class UpdateProductUseCase {
   constructor(
     private productsRepository: ProductsRepository,
     private prisma: PrismaService,
-  ) {}
+  ) { }
 
   async execute(id: string, dto: UpdateProductDto) {
     const product = await this.productsRepository.findById(id);
